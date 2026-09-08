@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Protocol | Decentralized AI Mesh</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #07090e; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .glass-panel {
+            background: rgba(18, 24, 38, 0.65);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glow-amber { box-shadow: 0 0 30px -5px rgba(245, 158, 11, 0.35); }
+        .glow-cyan { box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.3); }
+        .aura-logo-ring {
+            animation: spin 12s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360ddeg); } }
+    </style>
+</head>
+<body class="text-slate-200 min-h-screen flex flex-col justify-between relative overflow-x-hidden selection:bg-amber-500 selection:text-black">
+
+    <!-- Ambient Gradient Background Lights -->
+    <div class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-[140px] pointer-events-none"></div>
+    <div class="absolute bottom-10 right-10 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none"></div>
+
+    <!-- Navigation Header with Dynamic SVG Logo Logic -->
+    <header class="w-full max-w-7xl mx-auto px-6 py-6 flex items-center justify-between z-10">
+        
+        <!-- LOGO LOGIC START -->
+        <a href="/" class="flex items-center gap-3 group">
+            <div class="relative w-10 h-10 flex items-center justify-center">
+                <!-- Rotating Holographic Ring -->
+                <svg class="absolute inset-0 w-full h-full aura-logo-ring" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="45" fill="none" stroke="url(#amber-gradient)" stroke-width="4" stroke-dasharray="70 40" />
+                    <defs>
+                        <linearGradient id="amber-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#f59e0b" />
+                            <stop offset="100%" stop-color="#06b6d4" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <!-- Central Emblem Matrix -->
+                <div class="w-7 h-7 rounded-lg bg-amber-500 flex items-center justify-center font-extrabold text-black text-lg group-hover:scale-105 transition-transform glow-amber">
+                    ∀
+                </div>
+            </div>
+            <div class="flex flex-col">
+                <span class="font-extrabold text-xl tracking-wider text-white flex items-center gap-2">
+                    AURA
+                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/30">x402 CORE</span>
+                </span>
+                <span class="text-[10px] text-slate-500 tracking-widest uppercase font-mono">Agent Notary Protocol</span>
+            </div>
+        </a>
+        <!-- LOGO LOGIC END -->
+
+        <div class="flex items-center gap-4">
+            <div class="hidden md:flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-panel text-xs font-mono text-slate-300 border border-slate-800">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>Node Active: <span class="text-amber-400 font-bold">x402 Notary</span></span>
+            </div>
+            <button onclick="connectAuraWallet()" class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-semibold text-sm transition-all duration-200 glow-amber flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                Connect Web3 Wallet (DID)
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Hero Section -->
+    <main class="w-full max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center z-10 my-auto">
+        
+        <!-- Left Column: Value Proposition -->
+        <div class="lg:col-span-7 space-y-8">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-panel border border-amber-500/30 text-amber-400 text-xs font-mono">
+                <span class="flex h-2 w-2 relative">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                </span>
+                Decentralized Machine-to-Machine Clearinghouse
+            </div>
+
+            <h1 class="text-5xl sm:text-6xl font-extrabold text-white tracking-tight leading-[1.1]">
+                One Query. <br>
+                Every Model. <br>
+                <span class="bg-gradient-to-r from-amber-400 via-orange-400 to-cyan-400 bg-clip-text text-transparent">Zero Limits.</span>
+            </h1>
+
+            <p class="text-slate-400 text-lg max-w-xl leading-relaxed">
+                The automated toll booth for AI agents. Monetize prompts and ethical web scraping via real-time HTTP 402 micro-settlements and publisher yield sharing.
+            </p>
+
+            <!-- Telemetry Metrics Bar -->
+            <div class="grid grid-cols-3 gap-4 pt-6 border-t border-slate-800/80 max-w-lg">
+                <div>
+                    <div class="text-2xl font-bold text-white font-mono">$0.001</div>
+                    <div class="text-xs text-slate-500 uppercase tracking-wider font-mono">AI Routing Fee</div>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold font-mono text-emerald-400">12ms</div>
+                    <div class="text-xs text-slate-500 uppercase tracking-wider font-mono">Visa TTL 30s</div>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold font-mono text-cyan-400">50 / 50</div>
+                    <div class="text-xs text-slate-500 uppercase tracking-wider font-mono">Publisher Split</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Live Model Mesh & Scraper Node Panel -->
+        <div class="lg:col-span-5 space-y-4">
+            <div class="glass-panel rounded-2xl p-6 shadow-2xl relative">
+                
+                <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-800">
+                    <div class="flex items-center gap-2">
+                        <div class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></div>
+                        <h3 class="font-bold text-white tracking-wide">Live Routing Mesh</h3>
+                    </div>
+                    <span class="text-xs font-mono text-slate-400 bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700">x402 Active</span>
+                </div>
+
+                <!-- Mesh Nodes List -->
+                <div class="space-y-3">
+                    
+                    <!-- DeepSeek Node -->
+                    <div class="p-3.5 rounded-xl bg-slate-900/80 border border-emerald-500/30 flex items-center justify-between hover:border-emerald-500/60 transition-all cursor-pointer group">
+                        <div class="flex items-center gap-3">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                            <div>
+                                <div class="text-sm font-semibold text-white group-hover:text-amber-400 transition-colors">DeepSeek V3</div>
+                                <div class="text-xs text-slate-500 font-mono">DeepSeek Grid Node</div>
+                            </div>
+                        </div>
+                        <div class="text-right font-mono">
+                            <div class="text-xs text-emerald-400 font-bold">$0.001 / req</div>
+                            <div class="text-[10px] text-slate-500">18ms</div>
+                        </div>
+                    </div>
+
+                    <!-- GPT-4o Node -->
+                    <div class="p-3.5 rounded-xl bg-slate-900/80 border border-emerald-500/30 flex items-center justify-between hover:border-emerald-500/60 transition-all cursor-pointer group">
+                        <div class="flex items-center gap-3">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                            <div>
+                                <div class="text-sm font-semibold text-white group-hover:text-amber-400 transition-colors">GPT-4o</div>
+                                <div class="text-xs text-slate-500 font-mono">OpenAI Node</div>
+                            </div>
+                        </div>
+                        <div class="text-right font-mono">
+                            <div class="text-xs text-emerald-400 font-bold">$0.001 / req</div>
+                            <div class="text-[10px] text-slate-500">24ms</div>
+                        </div>
+                    </div>
+
+                    <!-- Scraper Node with Publisher Yield -->
+                    <div class="p-3.5 rounded-xl bg-slate-900/80 border border-cyan-500/30 flex items-center justify-between hover:border-cyan-500/60 transition-all cursor-pointer group glow-cyan">
+                        <div class="flex items-center gap-3">
+                            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                            <div>
+                                <div class="text-sm font-semibold text-white group-hover:text-cyan-300 transition-colors">Ethical Web Scraper</div>
+                                <div class="text-xs text-slate-500 font-mono">aura.txt Yield Share</div>
+                            </div>
+                        </div>
+                        <div class="text-right font-mono">
+                            <div class="text-xs text-cyan-400 font-bold">$0.002 / req</div>
+                            <div class="text-[10px] text-slate-500">50% to Publisher</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Live Notary Feed Terminal -->
+                <div class="mt-4 p-3 rounded-lg bg-black/70 border border-slate-800 font-mono text-[11px] text-slate-400 space-y-1">
+                    <div class="text-slate-500 border-b border-slate-800/80 pb-1 flex justify-between">
+                        <span>NOTARY EXECUTION LOG</span>
+                        <span class="text-amber-400">HMAC-SHA256</span>
+                    </div>
+                    <div class="text-emerald-400 overflow-hidden text-ellipsis whitespace-nowrap">
+                        [402 SETTLED] Visa issued: AURA-QS-9f3a1...
+                    </div>
+                    <div class="text-slate-500 overflow-hidden text-ellipsis whitespace-nowrap">
+                        [YIELD] 0.001 USDC -> 0xF4FE...eBB0
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full max-w-7xl mx-auto px-6 py-6 border-t border-slate-800/60 flex items-center justify-between text-xs font-mono text-slate-500 z-10">
+        <div>AURA PROTOCOL © 2026</div>
+        <div>FASTAPI x402 NOTARY NODE</div>
+    </footer>
+
+    <script src="auraIntegration.js"></script>
+</body>
+</html>
