@@ -1,0 +1,15 @@
+name: Keep Render Node Awake
+
+on:
+  schedule:
+    # Runs every 12 minutes to beat Render's 15-minute sleep timer
+    - cron: '*/12 * * * *'
+  workflow_dispatch: # Allows manual triggering from GitHub
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Live Endpoint
+        run: |
+          curl -s https://agsr-primary-node.onrender.com/ > /dev/null
