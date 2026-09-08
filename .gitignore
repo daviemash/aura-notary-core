@@ -1,15 +1,7 @@
-# Environments
 .env
 .venv
 env/
 venv/
-ENV/
-
-# Python caching
 __pycache__/
-*.py[cod]
-*$py.class
-
-# OS generated files
+*.pyc
 .DS_Store
-Thumbs.db
