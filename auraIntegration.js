@@ -1,85 +1,59 @@
-// auraIntegration.js
-const AURA_BACKEND_URL = "https://aura-protocol.onrender.com";
-
 /**
- * 1. Connect Web3 Wallet (DID Authentication)
+ * Aura Protocol - Web3 Direct Wallet Authentication
  */
-async function connectAuraWallet() {
-    if (typeof window.ethereum !== 'undefined') {
-        try {
-            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-            const walletAddress = accounts[0];
-            console.log("Aura DID Connected:", walletAddress);
-            return walletAddress;
-        } catch (error) {
-            console.error("Wallet Connection Declined:", error);
-            return null;
-        }
-    } else {
-        alert("Web3 Wallet not detected. Please install MetaMask or a compatible browser wallet.");
-        return null;
-    }
-}
 
-/**
- * 2. Execute AI Model Query with x402 Handshake
- */
-async function queryAuraModel(agentId, promptIntent, modelId = "gpt-4o", paymentSignature = null) {
-    const headers = { "Content-Type": "application/json" };
-    if (paymentSignature) {
-        headers["X-402-Payment-Signature"] = paymentSignature;
+async function connectWeb3Wallet() {
+    const terminalLog = document.getElementById("terminalLog");
+    const logAuthType = document.getElementById("logAuthType");
+    const walletBtnText = document.getElementById("walletBtnText");
+    const walletStatusPanel = document.getElementById("walletStatusPanel");
+    const connectedAddress = document.getElementById("connectedAddress");
+
+    // Check if EVM Wallet (MetaMask, Rabby, Coinbase Wallet) is installed
+    if (typeof window.ethereum === 'undefined') {
+        alert("No Web3 provider detected! Please install MetaMask or another EVM wallet extension.");
+        if (terminalLog) terminalLog.innerText = "[ERROR] No window.ethereum provider found.";
+        return;
     }
 
     try {
-        const url = `${AURA_BACKEND_URL}/v1/request-notarization?agent_id=${encodeURIComponent(agentId)}&intent=${encodeURIComponent(promptIntent)}&model_id=${encodeURIComponent(modelId)}`;
-        const response = await fetch(url, { method: "POST", headers: headers });
+        if (terminalLog) terminalLog.innerText = "[WEB3] Requesting account access...";
+        
+        // 1. Request wallet account access
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        const userAddress = accounts[0];
 
-        // HTTP 402 Handshake Interception
-        if (response.status === 402) {
-            const payDetails = await response.json();
-            console.warn("HTTP 402 Payment Required Triggered:", payDetails.detail);
-            
-            alert(`Aura Toll Gate: $${payDetails.detail.amount_usdc} USDC required to route query to ${modelId}.\nStreaming to: ${payDetails.detail.yield_to}`);
-            return null;
+        if (terminalLog) terminalLog.innerText = `[WEB3] Requesting signature verification from ${userAddress.slice(0, 6)}...${userAddress.slice(-4)}`;
+
+        // 2. Request cryptographic signature for identity challenge
+        const timestamp = Math.floor(Date.now() / 1000);
+        const challengeMessage = `Aura Protocol Authentication\nSign this message to prove ownership of your wallet.\nTimestamp: ${timestamp}`;
+
+        const signature = await window.ethereum.request({
+            method: 'personal_sign',
+            params: [challengeMessage, userAddress]
+        });
+
+        // 3. Update UI on successful signature
+        const truncatedAddress = `${userAddress.substring(0, 6)}...${userAddress.substring(userAddress.length - 4)}`;
+        
+        if (walletBtnText) walletBtnText.innerText = truncatedAddress;
+        if (connectedAddress) connectedAddress.innerText = userAddress;
+        if (walletStatusPanel) walletStatusPanel.classList.remove("hidden");
+        if (logAuthType) logAuthType.innerText = "EIP-191 SIGNED";
+        if (terminalLog) {
+            terminalLog.className = "text-emerald-400 font-mono text-[11px] overflow-hidden text-ellipsis whitespace-nowrap";
+            terminalLog.innerText = `[VERIFIED] Signature ${signature.slice(0, 16)}... bound to DID ${truncatedAddress}`;
         }
 
-        if (response.ok) {
-            const data = await response.json();
-            console.log("Oxygen Visa Issued:", data.oxygen_visa);
-            return data.oxygen_visa;
-        }
+        console.log("Authenticated Web3 Wallet:", userAddress);
+        console.log("Cryptographic Proof:", signature);
+
     } catch (error) {
-        console.error("Aura Network Error:", error);
-    }
-}
-
-/**
- * 3. Execute Scraper Query with Publisher Yield Sharing
- */
-async function queryAuraScraper(agentId, targetUrl, paymentSignature = null) {
-    const headers = { "Content-Type": "application/json" };
-    if (paymentSignature) {
-        headers["X-402-Payment-Signature"] = paymentSignature;
-    }
-
-    try {
-        const url = `${AURA_BACKEND_URL}/v1/request-scrape?agent_id=${encodeURIComponent(agentId)}&target_url=${encodeURIComponent(targetUrl)}`;
-        const response = await fetch(url, { method: "POST", headers: headers });
-
-        if (response.status === 402) {
-            const payDetails = await response.json();
-            console.warn("Publisher Yield Share 402 Triggered:", payDetails.detail);
-            
-            alert(`Ethical Scraper Gate: $${payDetails.detail.amount_usdc} USDC required.\n50% paid to website owner at ${payDetails.detail.publisher_yield_to}`);
-            return null;
+        console.error("User rejected signature or connection failed:", error);
+        if (terminalLog) {
+            terminalLog.className = "text-red-400 font-mono text-[11px] overflow-hidden text-ellipsis whitespace-nowrap";
+            terminalLog.innerText = `[FAILED] ${error.message || "User denied signature request."}`;
         }
-
-        if (response.ok) {
-            const data = await response.json();
-            console.log("Scrape Visa Granted:", data.oxygen_visa);
-            return data.oxygen_visa;
-        }
-    } catch (error) {
-        console.error("Scraper Network Error:", error);
     }
 }
