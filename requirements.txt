@@ -1,5 +1,5 @@
-fastapi
-uvicorn
-python-dotenv
-cryptography
-pydantic
+fastapi==0.109.2
+uvicorn==0.27.1
+pydantic==2.6.1
+python-dotenv==1.0.1
+web3==6.15.1
